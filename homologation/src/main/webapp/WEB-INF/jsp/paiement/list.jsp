@@ -24,9 +24,24 @@
 					class="bi bi-arrow-down"></i> Paiements de la banque</a>
 			</div>
 			<div class="col-md-4">
-			<fmt:setLocale value="fr_FR"/>
-			<a href="#" class="btn btn-sm btn-outline-primary"> TOTAL USD : <c:choose><c:when test="${summaryUSD eq null}">0</c:when><c:otherwise><fmt:formatNumber value="${summaryUSD}" type="number" groupingUsed="true"/></c:otherwise></c:choose></a>
-			<a href="#" class="btn btn-sm btn-outline-primary"> TOTAL CDF : <c:choose><c:when test="${summaryCDF eq null}">0</c:when><c:otherwise><fmt:formatNumber value="${summaryCDF}" type="number" groupingUsed="true"/></c:otherwise></c:choose></a>
+				<fmt:setLocale value="fr_FR" />
+				<a href="#" class="btn btn-sm btn-outline-primary"> TOTAL USD :
+					<c:choose>
+						<c:when test="${summaryUSD eq null}">0</c:when>
+						<c:otherwise>
+							<fmt:formatNumber value="${summaryUSD}" type="number"
+								groupingUsed="true" />
+						</c:otherwise>
+					</c:choose>
+				</a> <a href="#" class="btn btn-sm btn-outline-primary"> TOTAL CDF :
+					<c:choose>
+						<c:when test="${summaryCDF eq null}">0</c:when>
+						<c:otherwise>
+							<fmt:formatNumber value="${summaryCDF}" type="number"
+								groupingUsed="true" />
+						</c:otherwise>
+					</c:choose>
+				</a>
 			</div>
 		</div>
 		<hr />
@@ -42,7 +57,65 @@
 			style="overflow-x: hidden; overflow-y: auto; height: 500px;">
 			<div class="card">
 				<div class="card-header">
-				
+					<div class="row">
+						<div class="col-md-6">
+							<c:if test="${totalPages gt 1}">
+								<ul class="pagination">
+									<c:if test="${currentPage != 1}">
+										<li class="page-item"><a class="page-link"
+											href="/cnpr-homologation/payment/list?page=${currentPage - 1}">&#60;&#60;</a></li>
+									</c:if>
+
+									<c:if test="${currentPage gt 3}">
+										<li class="page-item"><a class="page-link"
+											href="/cnpr-homologation/payment/list?page=1">1</a></li>
+										<li class="page-item"></li>
+									</c:if>
+
+									<c:if test="${currentPage -2 gt 0}">
+										<li class="page-item"><a class="page-link"
+											href="/cnpr-homologation/payment/list?page=${currentPage - 2}">${currentPage - 2}</a></li>
+									</c:if>
+									<c:if test="${currentPage -1 gt 0}">
+										<li class="page-item"><a class="page-link"
+											href="/cnpr-homologation/payment/list?page=${currentPage - 1}">${currentPage - 1}</a></li>
+									</c:if>
+
+									<li class="page-item active"><a class="page-link"
+										href="/cnpr-homologation/payment/list?page=${currentPage}">${currentPage}</a></li>
+
+									<c:if test="${currentPage +1 lt totalPages+1}">
+										<li class="page-item"><a class="page-link"
+											href="/cnpr-homologation/payment/list?page=${currentPage +1}">${currentPage +1}</a></li>
+									</c:if>
+									<c:if test="${currentPage +2 lt totalPages+1}">
+										<li class="page-item"><a class="page-link"
+											href="/cnpr-homologation/payment/list?page=${currentPage +2}">${currentPage +2}</a></li>
+									</c:if>
+
+									<c:if test="${currentPage lt totalPages-2}">
+										<li class="page-item"></li>
+										<li class="page-item"><a class="page-link"
+											href="/cnpr-homologation/payment/list?page=${totalPages}">${totalPages}</a></li>
+
+									</c:if>
+
+									<c:if test="${currentPage lt totalPages}">
+										<li class="page-item"><a class="page-link"
+											href="/cnpr-homologation/payment/list?page=${currentPage +1}">&#62;&#62;</a></li>
+
+									</c:if>
+								</ul>
+							</c:if>
+						</div>
+						<div class="col-md-6" style="text-align: right">
+							<a href="#"
+								class="btn btn-sm btnModalFilterPayment btn-outline-success"
+								data-toggle="modal" data-target=""><i class="bi bi-search"></i> Filtre de recherche</a>
+						</div>
+					</div>
+
+
 				</div>
 
 				<div class="card-body">
@@ -99,6 +172,7 @@
 
 		</div>
 
+<%@ include file="modalFilterPayment.jsp"%>
 	</section>
 
 </main>

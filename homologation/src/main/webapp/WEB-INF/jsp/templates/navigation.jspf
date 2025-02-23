@@ -38,8 +38,7 @@
 								test="${loggedUserPermission['display_menu_auto_ecole'] eq true}">
 								<li class="nav-item"><a class="nav-link "
 									href="/cnpr-homologation/autoEcole/list"> <i
-										class="bi bi-input-cursor-text"></i> <span>Liste des
-											auto écoles</span>
+										class="bi bi-input-cursor-text"></i> <span>Auto-écoles</span>
 								</a></li>
 							</c:if>
 						</c:if>

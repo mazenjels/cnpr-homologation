@@ -3,17 +3,17 @@
 <div class="modal fade" id="formModalRegisterPayment" tabindex="-1"
 	data-bs-backdrop="false">
 	<div class="modal-dialog modal-lg">
-
-		<div class="modal-content">
-			<form method="post" action="/cnpr-homologation/payment/save">
-				<div class="card">
-					<div class="card-body">
-						<div class="modal-header">
+<div class="modal-header">
 							<h5 class="modal-title">Enregistrement du paiement -
 								${payment.autoEcole.designation}</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal"
 								aria-label="Close"></button>
 						</div>
+		<div class="modal-content">
+			<form method="post" action="/cnpr-homologation/payment/save">
+				<div class="card">
+					<div class="card-body">
+						
 						<div class="row">
 							<div class="col-md-6">
 								<div class="form-floating  mb-3">
@@ -100,6 +100,26 @@
 								</div>
 							</div>
 						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-floating  mb-3">
+										<input type="text" onfocus="(this.type='date')"
+											min="1970-01-01" class="form-control input-sm"
+											required="required" id="bankTransactionDate" name="bankTransactionDate"
+											placeholder="dd-mm-yyyy" />
+										<label for="bankTransactionDate">Date de la transaction</label>
+									</div>
+								</div>
+								<div class="col-md-6">
+								<div class="form-floating  mb-3">
+										<input type="time" 
+											min="1970-01-01" class="form-control input-sm"
+											required="required" id="bankTransactionTime" name="bankTransactionTime" />
+										<label for="bankTransactionTime">Heure de la transaction</label>
+									</div>
+								</div>
+							</div>
+						</div>
 						<div class="modal-footer">
 							<h6></h6>
 
@@ -109,9 +129,10 @@
 								data-bs-dismiss="modal">Valider</button>
 						</div>
 					</div>
+					</form>
 				</div>
 
-			</form>
+			
 		</div>
 	</div>
 </div>

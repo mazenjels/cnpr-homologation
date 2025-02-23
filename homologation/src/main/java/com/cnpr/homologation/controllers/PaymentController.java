@@ -8,17 +8,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cnpr.homologation.models.BankPaiement;
+import com.cnpr.homologation.models.CnprAutoEcole;
 import com.cnpr.homologation.models.CnprPayment;
 import com.cnpr.homologation.models.CnprUser;
 import com.cnpr.homologation.models.PaymentMode;
@@ -42,9 +47,15 @@ public class PaymentController {
 	BankPaiementServiceImpl bankPaiementServiceImpl;
 
 	@GetMapping({ "/list", "/payment/list" })
-	public String viewPaymentList(@ModelAttribute("message") String message, Model model,HttpServletRequest request) {
+	public String viewPaymentList(Model model, @RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "10") int size, HttpServletRequest request,
+			@ModelAttribute("message") String message) {
 		HttpSession session = request.getSession();
-		List<CnprPayment> paymentList = paymentService.getAllCnprPayment();
+		//List<CnprPayment> paymentList = paymentService.getAllCnprPayment();
+		
+		Pageable pageable = PageRequest.of(page - 1, size);
+		Page<CnprPayment> pagePayment = paymentService.getAllPageable(pageable);
+		List<CnprPayment> paymentList = pagePayment.getContent();
 		
 		Summary summaryUSD = paymentService.getAmountUSD();
 		Summary summaryCDF = paymentService.getAmountCDF();
@@ -53,6 +64,10 @@ public class PaymentController {
 		session.setAttribute("summaryCDF", summaryCDF.getTotal());
 		
 		model.addAttribute("paymentList", paymentList);
+		model.addAttribute("currentPage", pagePayment.getNumber() + 1);
+		model.addAttribute("totalItems", pagePayment.getTotalElements());
+		model.addAttribute("totalPages", pagePayment.getTotalPages());
+		model.addAttribute("pageSize", size);
 		model.addAttribute("message", message);
 
 		return "paiement/list";
@@ -116,8 +131,13 @@ public class PaymentController {
 		payment.setReference(request.getParameter("reference"));
 		payment.setAmount(Long.parseLong(request.getParameter("amount")));
 		payment.setCurrencyCode(request.getParameter("currencyCode"));
+		payment.setCandidatCode(request.getParameter("candidatCode"));
 		payment.setBankBranch(request.getParameter("bankBranch"));
 		payment.setTransactionId(request.getParameter("transactionId"));
+		payment.setActiveStatus(true);
+		payment.setPaymentStatus("paid");
+		String bankTransactionTime = request.getParameter("bankTransactionDate")+" "+request.getParameter("bankTransactionTime");
+		payment.setBankTransactionTime(bankTransactionTime);
 		payment.setMotif(request.getParameter("motif"));
 		payment.setBank(paymentMode.getDesignation());
 		//PaymentMode paymentMode = new PaymentMode();

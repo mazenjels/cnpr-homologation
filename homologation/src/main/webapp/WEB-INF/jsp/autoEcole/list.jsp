@@ -145,7 +145,7 @@
 								<th>Documents attendus</th>
 								<!-- <th>Telephone</th>
 								<th>Email</th> -->
-								<th>Adresse</th>
+								<!-- <th>Adresse</th> -->
 								<!-- <th>Commune</th>
 								<th>District</th>
 								<th>Province</th> -->
@@ -168,7 +168,7 @@
 									<td>${autoEcole.typeDocuments}</td>
 									<%-- <td>${autoEcole.phone}</td>
 									<td>${autoEcole.email}</td> --%>
-									<td>${autoEcole.adresseNumber},${autoEcole.adresseAvenue}/${autoEcole.commune.designation}, ${autoEcole.commune.district.province.designation}/${autoEcole.commune.district.designation}</td>
+									<%-- <td>${autoEcole.adresseNumber},${autoEcole.adresseAvenue}/${autoEcole.commune.designation}, ${autoEcole.commune.district.province.designation}/${autoEcole.commune.district.designation}</td> --%>
 									<%-- <td>${autoEcole.commune.designation}</td>
 									<td>${autoEcole.commune.district.designation}</td>
 									<td>${autoEcole.commune.district.province.designation}</td> --%>
@@ -186,15 +186,16 @@
 												attente de soumission</span>
 										</c:if></td>
 									<td>
-									<c:if test="${loggedUserPermission['update_identification_auto_ecole'] eq true}">
-									<a title="Modifier" href="/cnpr-homologation/autoEcole/edit/${autoEcole.id}" class="btn btn-sm btn-outline-primary" ><i class="bi bi-pencil"></i></a> 
-									</c:if>
 									<c:if test="${loggedUserPermission['detail_identification_auto_ecole'] eq true}">
 									<a href="/cnpr-homologation/autoEcole/view/${autoEcole.id}" title="Voir le detail" class="btn btn-sm btn-outline-success" ><i class="bi bi-eye"></i></a> 
 									</c:if>
-									<%-- <c:if test="${loggedUserPermission['afficher_document_auto_ecole'] eq true}"> --%>
+									<%-- <c:if test="${loggedUserPermission['update_identification_auto_ecole'] eq true}">
+									<a title="Modifier" href="/cnpr-homologation/autoEcole/edit/${autoEcole.id}" class="btn btn-sm btn-outline-primary" ><i class="bi bi-pencil"></i></a> 
+									</c:if>
+									
+									<c:if test="${loggedUserPermission['afficher_document_auto_ecole'] eq true}">
 									<a title="Afficher les documents" href="/cnpr-homologation/autoEcole/viewDoc/${autoEcole.id}" class="btn btn-sm btn-outline-warning" ><i class="bi bi-file-earmark-pdf"></i></a>
-									<%-- </c:if>  --%>
+									</c:if> 
 									<c:if test="${loggedUserPermission['detail_type_vehicule'] eq true}">
 									<a title="Types de vehicule" href="/cnpr-homologation/autoEcole/vehicleType/${autoEcole.id}" class="btn btn-sm btn-outline-danger" ><i class="ri-car-line"></i></a> 
 									</c:if>
@@ -216,7 +217,7 @@
 									
 									 <c:if test="${loggedUserPermission['write_utilisateur'] eq true}"> 
 									<a title="Utilisateurs" href="/cnpr-homologation/autoEcole/user/${autoEcole.id}" class="btn btn-sm btn-outline-dark" ><i class="ri ri-account-pin-box-fill "></i></a>
-									</c:if> 
+									</c:if>  --%>
 											</td>
 								</tr>
 							</c:forEach>

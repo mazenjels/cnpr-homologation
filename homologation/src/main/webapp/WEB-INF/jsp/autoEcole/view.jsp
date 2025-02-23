@@ -44,13 +44,80 @@
 								class="bi bi-pencil-square"></i> Enregistrer le paiement</a>
 						</c:if>
 					</c:when>
-					<c:otherwise>
-						<span class="badge bg-info text-dark"><i
-							class="bi bi-info-circle me-1"></i> Auto ecole déjà homologué </span>
-						<span class="badge bg-success"><i
-							class="bi bi-check-circle me-1"></i> ${autoEcole.codeUnique}</span>
-					</c:otherwise>
+					<%-- <c:otherwise>
+						<h5>
+							<span class="badge bg-success"><i
+								class="bi bi-info-circle me-1"></i> Homologué </span>
+						</h5>
+						<h5>
+							<span class="badge bg-success"><i
+								class="bi bi-check-circle me-1"></i> ${autoEcole.codeUnique}é </span>
+						</h5>
+						
+					</c:otherwise> --%>
 				</c:choose>
+			</div>
+			<div class="col-md-8" style="text-align: right">
+				<c:if
+					test="${loggedUserPermission['update_identification_auto_ecole'] eq true}">
+					<a title="Mettre a jour"
+						href="/cnpr-homologation/autoEcole/edit/${autoEcole.id}"
+						class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i>
+						Mettre a jour</a>
+				</c:if>
+
+				<%-- <c:if test="${loggedUserPermission['afficher_document_auto_ecole'] eq true}"> --%>
+				<a title="Afficher les documents"
+					href="/cnpr-homologation/autoEcole/viewDoc/${autoEcole.id}"
+					class="btn btn-sm btn-outline-danger"><i
+					class="bi bi-file-earmark-pdf"></i> Afficher les documents</a>
+				<%-- </c:if>  --%>
+				<c:if test="${loggedUserPermission['detail_type_vehicule'] eq true}">
+					<a title="Types de vehicule"
+						href="/cnpr-homologation/autoEcole/vehicleType/${autoEcole.id}"
+						class="btn btn-sm btn-outline-success"><i class="ri-car-line"></i>
+						Types de vehicule</a>
+				</c:if>
+				<c:if test="${loggedUserPermission['detail_type_brevet'] eq true}">
+					<a title="Types de brevet"
+						href="/cnpr-homologation/autoEcole/typePermis/${autoEcole.id}"
+						class="btn btn-sm btn-outline-secondary"><i
+						class="bi bi-card-heading"></i> Types de brevet</a>
+				</c:if>
+				<c:if
+					test="${loggedUserPermission['joindre_document_auto_ecole'] eq true}">
+					<a title="Joindre un document"
+						href="/cnpr-homologation/autoEcole/document/${autoEcole.id}"
+						class="btn btn-sm btn-outline-info"><i
+						class="bi bi-file-earmark-diff-fill"></i> Joindre un document</a>
+				</c:if>
+				<c:if
+					test="${loggedUserPermission['joindre_logo_auto_ecole'] eq true}">
+					<a title="Charger le logo"
+						href="/cnpr-homologation/autoEcole/photo/${autoEcole.id}"
+						class="btn btn-sm btn-outline-primary"><i
+						class="bi bi-card-image"></i> Charger le logo</a>
+				</c:if>
+				<c:if test="${loggedUserPermission['detail_formateur'] eq true}">
+					<a title="Formateurs"
+						href="/cnpr-homologation/autoEcole/formateur/${autoEcole.id}"
+						class="btn btn-sm btn-outline-success"><i
+						class="bi bi-person-plus-fill"></i> Formateurs</a>
+				</c:if>
+				<c:if test="${loggedUserPermission['write_candidat'] eq true}">
+					<a title="Candidats"
+						href="/cnpr-homologation/autoEcole/candidat/${autoEcole.id}"
+						class="btn btn-sm btn-outline-danger"><i
+						class="ri ri-file-ppt-2-fill "></i> Candidats</a>
+				</c:if>
+
+				<c:if test="${loggedUserPermission['write_utilisateur'] eq true}">
+					<a title="Utilisateurs"
+						href="/cnpr-homologation/autoEcole/user/${autoEcole.id}"
+						class="btn btn-sm btn-outline-dark"><i
+						class="ri ri-account-pin-box-fill "></i> Utilisateurs</a>
+				</c:if>
+
 			</div>
 		</div>
 		<hr />
@@ -65,55 +132,76 @@
 
 						<img src="<c:url value="/img/cnpr.png"/>" alt="Profile"
 							class="rounded-circle">
-						<h2>${autoEcole.designation}</h2>
-						<table>
-							<tr>
-								<td><i class="bi bi-geo-alt-fill"></i>
-									${autoEcole.adresseNumber}, ${autoEcole.adresseAvenue} -
-									${autoEcole.ville.designation}/${autoEcole.commune.designation}
-									- ${autoEcole.province.designation}</td>
-							</tr>
-							<c:if test="${autoEcole.headquarter eq true}">
+						<h3>${autoEcole.designation}</h3>
+						<c:choose>
+									<c:when test="${empty autoEcole.codeUnique}">
+										
+									</c:when>
+									<c:otherwise>
+										<h5>
+											<span class="badge bg-success"><i
+												class="bi bi-info-circle me-1"></i> Homologué </span>
+												<span class="badge bg-primary"><i
+												class="bi bi-check-circle me-1"></i>
+												${autoEcole.codeUnique}</span>
+										</h5>
+										
+
+									</c:otherwise>
+								</c:choose>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<table>
 								<tr>
-									<td colspan="2">Siège social :
-										${autoEcole.adresseHeadquarter}</td>
+									<td><i class="bi bi-geo-alt-fill"></i>
+										${autoEcole.adresseNumber}, ${autoEcole.adresseAvenue} -
+										${autoEcole.ville.designation}/${autoEcole.commune.designation}
+										- ${autoEcole.province.designation}</td>
 								</tr>
-							</c:if>
-							<tr>
-								<td><i class="bi bi-phone-vibrate"></i> ${autoEcole.phone},
-									${autoEcole.phone2}</td>
-							</tr>
-							<tr>
-								<td><i class="bi bi-mailbox"></i> ${autoEcole.email}</td>
-							</tr>
-							<tr>
-								<td><i class="bi bi-file-person-fill"></i>
-									${autoEcole.directeurGerant} [Promoteur]</td>
-							</tr>
-							<tr>
-								<td><i class="bi bi-building"></i>
-									${autoEcole.capaciteSalle} [Capacité de la salle]</td>
-							</tr>
-							<tr>
-								<td colspan="2" style="background-color: grey"></td>
-							</tr>
-							<tr>
-								<td colspan="2">Types de documents attendus: <span
-									class="card-title">${autoEcole.typeDocuments}</span></td>
-							</tr>
-							<tr>
-								<td colspan="2" style="background-color: grey"></td>
-							</tr>
-							<tr>
-								<td><i class="bi bi-file-earmark-pdf text-danger"></i></i> Type
-									de documents signalés : <c:choose>
-										<c:when test="${autoEcoleDocumentList== '[]'}">Aucun</c:when>
-										<c:otherwise>${autoEcoleDocumentList}</c:otherwise>
-									</c:choose></td>
-							</tr>
-						</table>
+								<c:if test="${autoEcole.headquarter eq true}">
+									<tr>
+										<td colspan="2">Siège social :
+											${autoEcole.adresseHeadquarter}</td>
+									</tr>
+								</c:if>
+								<tr>
+									<td><i class="bi bi-phone-vibrate"></i>
+										${autoEcole.phone}, ${autoEcole.phone2}</td>
+								</tr>
+								<tr>
+									<td><i class="bi bi-mailbox"></i> ${autoEcole.email}</td>
+								</tr>
+								<tr>
+									<td><i class="bi bi-file-person-fill"></i>
+										${autoEcole.directeurGerant} [Promoteur]</td>
+								</tr>
+								<tr>
+									<td><i class="bi bi-building"></i>
+										${autoEcole.capaciteSalle} [Capacité de la salle]</td>
+								</tr>
+								<tr>
+									<td colspan="2" style="background-color: grey"></td>
+								</tr>
+								<tr>
+									<td colspan="2">Types de documents attendus: <span
+										class="card-title">${autoEcole.typeDocuments}</span></td>
+								</tr>
+								<tr>
+									<td colspan="2" style="background-color: grey"></td>
+								</tr>
+								<tr>
+									<td><i class="bi bi-file-earmark-pdf text-danger"></i>
+										Type de documents signalés : <c:choose>
+											<c:when test="${autoEcoleDocumentList== '[]'}">Aucun</c:when>
+											<c:otherwise>${autoEcoleDocumentList}</c:otherwise>
+										</c:choose></td>
+								</tr>
+							</table>
+						</div>
 
 					</div>
+
 				</div>
 
 			</div>
@@ -212,8 +300,25 @@
 							</div>
 							<div class="tab-pane fade show  autoecole-paiements"
 								id="autoecole-paiements">
-								<fmt:setLocale value="fr_FR"/>
-								<h5 class="card-title">Paiements. <button type="button" class="btn btn-outline-primary">USD <c:choose><c:when test="${summaryUSD eq null}">0</c:when><c:otherwise><fmt:formatNumber value="${summaryUSD}" type="number" groupingUsed="true"/></c:otherwise></c:choose></button>  <button type="button" class="btn btn-outline-success">CDF <fmt:formatNumber value="${summaryCDF}" type="number" groupingUsed="true"/></button></h5>
+								<fmt:setLocale value="fr_FR" />
+								<h5 class="card-title">
+									Paiements.
+									<button type="button" class="btn btn-outline-primary">
+										USD
+										<c:choose>
+											<c:when test="${summaryUSD eq null}">0</c:when>
+											<c:otherwise>
+												<fmt:formatNumber value="${summaryUSD}" type="number"
+													groupingUsed="true" />
+											</c:otherwise>
+										</c:choose>
+									</button>
+									<button type="button" class="btn btn-outline-success">
+										CDF
+										<fmt:formatNumber value="${summaryCDF}" type="number"
+											groupingUsed="true" />
+									</button>
+								</h5>
 								<table
 									class="table table-bordered table-striped table-hover datatable">
 									<tr>
@@ -245,7 +350,7 @@
 											<td><fmt:parseDate pattern="yyyy-MM-dd HH:mm"
 													value="${payment.createdAt}" var="parsedDate" /> <fmt:formatDate
 													value="${parsedDate}" pattern="dd-MM-yyyy HH:mm" /></td>
-													<td>${payment.paymentStatus}</td>
+											<td>${payment.paymentStatus}</td>
 											<td><c:choose>
 													<c:when test="${payment.activeStatus eq true}">
 														<span class="badge rounded-pill bg-success">Verifié</span>

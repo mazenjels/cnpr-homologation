@@ -71,6 +71,10 @@ $(window).on("load", function() {
 	$('.btnModalRegisterPayment').on('click', function() {
 		$('#formModalRegisterPayment').modal('show');
 	});
+	
+	$('.btnModalFilterPayment').on('click', function() {
+		$('#formModalFilterPayment').modal('show');
+	});
 
 /* 	$
 	.ajax({

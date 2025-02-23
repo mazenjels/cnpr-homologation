@@ -3,9 +3,12 @@ package com.cnpr.homologation.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cnpr.homologation.models.CnprAutoEcole;
 import com.cnpr.homologation.models.CnprPayment;
 import com.cnpr.homologation.pojo.Summary;
 import com.cnpr.homologation.repository.PaymentRepository;
@@ -80,5 +83,10 @@ public class PaymentServiceImpl implements PaymentService {
 	public Summary getAmountCDF() {
 
 		return (Summary) paymentRepo.getAmountCDF();
+	}
+
+	public Page<CnprPayment> getAllPageable(Pageable pageable) {
+		// TODO Auto-generated method stub
+		return (Page<CnprPayment>)paymentRepo.getAllPageable(pageable);
 	}
 }

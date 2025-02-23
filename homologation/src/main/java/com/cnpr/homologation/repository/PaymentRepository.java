@@ -2,6 +2,8 @@ package com.cnpr.homologation.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -31,4 +33,7 @@ public interface PaymentRepository extends JpaRepository<CnprPayment, Long>{
 	 
 	 @Query("select new com.cnpr.homologation.pojo.Summary(SUM(m.amount)) from CnprPayment m where m.autoEcole.id=?1 and m.currencyCode='CDF'")
 	 public Summary getAmountCDFByAutoEcole(long autEcoleId);
+
+	 @Query("select t from CnprPayment t")
+	Page<CnprPayment> getAllPageable(Pageable pageable);
 }
