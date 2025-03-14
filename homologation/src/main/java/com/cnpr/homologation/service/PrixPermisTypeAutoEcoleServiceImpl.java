@@ -29,13 +29,13 @@ public class PrixPermisTypeAutoEcoleServiceImpl implements PrixPermisTypeAutoEco
 	}
 
 	@Override
-	public boolean saveOrUpdatePrixTypePermisAutoEcole(PrixTypePermisAutoEcole pers) {
+	public PrixTypePermisAutoEcole saveOrUpdatePrixTypePermisAutoEcole(PrixTypePermisAutoEcole pers) {
 		PrixTypePermisAutoEcole autoEcole = prixTypePermisRepo.save(pers);
 
 		if (prixTypePermisRepo.findById(autoEcole.getId()) != null) {
-			return true;
+			return autoEcole;
 		}
-		return false;
+		return null;
 	}
 
 	@Override
@@ -54,6 +54,11 @@ public class PrixPermisTypeAutoEcoleServiceImpl implements PrixPermisTypeAutoEco
 	public PrixTypePermisAutoEcole getPrixTypePermisAutoEcoleById(long id) {
 		// TODO Auto-generated method stub
 		return (PrixTypePermisAutoEcole) prixTypePermisRepo.getById(id);
+	}
+	
+	public List<PrixTypePermisAutoEcole> getAllPrixTypePermisAutoEcoleById(long id) {
+		// TODO Auto-generated method stub
+		return (List<PrixTypePermisAutoEcole> ) prixTypePermisRepo.getAllPrixTypePermisAutoEcoleById(id);
 	}
 
 	

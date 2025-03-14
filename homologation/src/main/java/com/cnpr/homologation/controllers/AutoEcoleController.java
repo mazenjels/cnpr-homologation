@@ -59,6 +59,7 @@ import com.cnpr.homologation.models.CnprVehiculeType;
 import com.cnpr.homologation.models.Commune;
 import com.cnpr.homologation.models.PaymentMode;
 import com.cnpr.homologation.models.Planification;
+import com.cnpr.homologation.models.PrixTypePermisAutoEcole;
 import com.cnpr.homologation.models.Province;
 import com.cnpr.homologation.models.TypePermis;
 import com.cnpr.homologation.pojo.Summary;
@@ -76,6 +77,7 @@ import com.cnpr.homologation.service.FormateurServiceImpl;
 import com.cnpr.homologation.service.PaymentModeServiceImpl;
 import com.cnpr.homologation.service.PaymentServiceImpl;
 import com.cnpr.homologation.service.PermisTypeServiceImpl;
+import com.cnpr.homologation.service.PrixPermisTypeAutoEcoleServiceImpl;
 import com.cnpr.homologation.service.ProvinceServiceImpl;
 import com.cnpr.homologation.service.RoleServiceImpl;
 import com.cnpr.homologation.service.UserServiceImpl;
@@ -90,6 +92,9 @@ public class AutoEcoleController {
 
 	@Autowired
 	AutoEcoleServiceImpl autoEcoleServiceImpl;
+
+	@Autowired
+	PrixPermisTypeAutoEcoleServiceImpl prixPermisTypeAutoServiceImpl;
 
 	@Autowired
 	VehiculeTypeServiceImpl vehiculeTypeServiceImpl;
@@ -145,14 +150,14 @@ public class AutoEcoleController {
 		Page<CnprAutoEcole> pageAutoecole = autoEcoleServiceImpl.getAllPageable(pageable);
 
 		List<CnprAutoEcole> autoEcoleList = pageAutoecole.getContent();
-		
-		//List<District> districtList = districtServiceImpl.getAllDistrict();
-		//List<Commune> communeList = communeServiceImpl.getAllActiveCommune();
-		//List<Province> provinceList = provinceServiceImpl.getAllActiveProvince();
-		//session.setAttribute("provinceList", provinceList);
 
-		//session.setAttribute("communeList", communeList);
-		//session.setAttribute("districtList", districtList);
+		// List<District> districtList = districtServiceImpl.getAllDistrict();
+		// List<Commune> communeList = communeServiceImpl.getAllActiveCommune();
+		// List<Province> provinceList = provinceServiceImpl.getAllActiveProvince();
+		// session.setAttribute("provinceList", provinceList);
+
+		// session.setAttribute("communeList", communeList);
+		// session.setAttribute("districtList", districtList);
 
 		model.addAttribute("autoEcoleList", autoEcoleList);
 		model.addAttribute("currentPage", pageAutoecole.getNumber() + 1);
@@ -227,11 +232,11 @@ public class AutoEcoleController {
 		Month currentMonth = currentdate.getMonth();
 
 		Calendar calendar = Calendar.getInstance();
-		int year = calendar.get(Calendar.YEAR);
-		int day = calendar.get(Calendar.DAY_OF_MONTH);
-		int hour = calendar.get(Calendar.HOUR_OF_DAY);
-		int min = calendar.get(Calendar.MINUTE);
-		int sec = calendar.get(Calendar.SECOND);
+//		int year = calendar.get(Calendar.YEAR);
+//		int day = calendar.get(Calendar.DAY_OF_MONTH);
+//		int hour = calendar.get(Calendar.HOUR_OF_DAY);
+//		int min = calendar.get(Calendar.MINUTE);
+//		int sec = calendar.get(Calendar.SECOND);
 
 		Map<String, String> mapMonths = new HashMap<>();
 		mapMonths.put("JANUARY", "01");
@@ -267,7 +272,7 @@ public class AutoEcoleController {
 		}
 		this.autoEcoleServiceImpl.saveOrUpdateCnprAutoEcole(autoEcole);
 
-		return "redirect:/changeStatus/" + autoEcole.getId();
+		return "redirect:/autoEcole/changeStatus/" + autoEcole.getId();
 	}
 
 	@GetMapping("/edit/{id}")
@@ -307,9 +312,9 @@ public class AutoEcoleController {
 		payment.setAutoEcole(autoEcole);
 
 		Summary summaryCDF = this.paymentService.getAmountCDFByAutoEcole(id);
-		
+
 		Summary summaryUSD = this.paymentService.getAmountUSDByAutoEcole(id);
-		
+
 		session.setAttribute("summaryCDF", summaryCDF.getTotal());
 		session.setAttribute("summaryUSD", summaryUSD.getTotal());
 		session.setAttribute("paymentList", paymentList);
@@ -324,6 +329,66 @@ public class AutoEcoleController {
 		session.setAttribute("payment", payment);
 
 		return "/autoEcole/view";
+	}
+
+	@GetMapping("/prixTypePermis/{id}")
+	public String prixTypePermis(@PathVariable("id") long id, Model model, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		PrixTypePermisAutoEcole prixTypePermis = new PrixTypePermisAutoEcole();
+		List<PrixTypePermisAutoEcole> prixTypePermisAutoEcoleList = prixPermisTypeAutoServiceImpl.getAllPrixTypePermisAutoEcoleById(id);
+		List<AutoEcoleTypePermis> autoEcoleTypePermisList = null;
+		List<TypePermis> typePermisList = null;
+		if (id == 1) {
+			typePermisList = typePermisServiceImpl.getAllActiveTypePermis();
+		} else {
+			typePermisList = new ArrayList<TypePermis>();
+			autoEcoleTypePermisList = autoEcoleTypePermisServiceImpl.getAllAutoEcoleTypePermisByAutoEcoleid(id);
+			for (AutoEcoleTypePermis permisAuto : autoEcoleTypePermisList) {
+				typePermisList.add(permisAuto.getTypePermis());
+			}
+
+		}
+		CnprAutoEcole autoEcole = new CnprAutoEcole();
+		autoEcole.setId(id);
+		prixTypePermis.setAutoEcole(autoEcole);
+		prixTypePermis.setCreatedBy((CnprUser) session.getAttribute("loggedUser"));
+		session.setAttribute("prixTypePermisAutoEcoleList", prixTypePermisAutoEcoleList);
+		session.setAttribute("typePermisList", typePermisList);
+		model.addAttribute("prixTypePermis", prixTypePermis);
+
+		return "/autoEcole/prixTypeBrevet";
+	}
+	
+	@GetMapping("/prixTypePermis/{id}/changeStatus")
+	public String prixTypePermisChangeStatus(@PathVariable("id") long id, Model model, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		
+		PrixTypePermisAutoEcole prixTypePermis = prixPermisTypeAutoServiceImpl.getPrixTypePermisAutoEcoleById(id);
+		
+		if (prixTypePermis.isActiveStatus() == false) {
+			prixTypePermis.setActiveStatus(true);
+		} else if (prixTypePermis.isActiveStatus() == true) {
+			prixTypePermis.setActiveStatus(false);
+		}
+		this.prixPermisTypeAutoServiceImpl.saveOrUpdatePrixTypePermisAutoEcole(prixTypePermis);
+		
+		return "redirect:/autoEcole/prixTypePermis/"+id;
+	}
+
+	@PostMapping("/prixTypePermis/save")
+	public String savePrixTypePermis(PrixTypePermisAutoEcole prixTypePermis, RedirectAttributes redirectAttributes,
+			HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		prixTypePermis.setCreatedBy((CnprUser) session.getAttribute("loggedUser"));
+		PrixTypePermisAutoEcole saved = this.prixPermisTypeAutoServiceImpl
+				.saveOrUpdatePrixTypePermisAutoEcole(prixTypePermis);
+		if (saved != null) {
+			redirectAttributes.addFlashAttribute("message", "Prix du type de brevet enregisté avec success");
+			return "redirect:/autoEcole/prixTypePermis/" + saved.getAutoEcole().getId();
+		}
+		;
+		redirectAttributes.addFlashAttribute("message", "Save failure");
+		return "redirect:/autoEcole/view/"+prixTypePermis.getAutoEcole().getId();
 	}
 
 	@GetMapping("/vehicleType/{id}")
@@ -413,13 +478,13 @@ public class AutoEcoleController {
 		} else {
 			if (this.formateurService.saveOrUpdateFormateur(formateur)) {
 				redirectAttributes.addFlashAttribute("message", "Formateur ajouté avec succes");
-				return "redirect:/autoEcole/formateur/" + formateur.getCnprAutoEcole().getId();
+				return "redirect:/autoEcole/view/" + formateur.getCnprAutoEcole().getId();
 			}
 			;
 		}
 
 		redirectAttributes.addFlashAttribute("message", "Save failure");
-		return "redirect:/autoEcole/formateur";
+		return "redirect:/autoEcole/view/" + formateur.getCnprAutoEcole().getId();
 	}
 
 	@GetMapping("/candidat/{id}")
@@ -438,13 +503,13 @@ public class AutoEcoleController {
 
 		return "/autoEcole/candidat";
 	}
-	
+
 	@PostMapping("/candidat/{id}/approveRecyclage")
 	public String approveRecyclage(@PathVariable("id") long id, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		Candidat candidat = candidatService.getCandidatById(id);
 		candidat.setRecyclageValide(true);
-		
+
 		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 		String currentDateTime = dateFormatter.format(new Date());
 
@@ -457,29 +522,29 @@ public class AutoEcoleController {
 		int hour = calendar.get(Calendar.HOUR_OF_DAY);
 		int min = calendar.get(Calendar.MINUTE);
 		int sec = calendar.get(Calendar.SECOND);
-		
-		String codeUnique=""+year;//202521133656
-		String times= ""+currentMonth.getValue()+day+hour+min+sec;
-		codeUnique=candidat.getCnprAutoEcole().getCodeUnique()+"-"+year+candidatService.shuffleString(times);
+
+		String codeUnique = "" + year;// 202521133656
+		String times = "" + currentMonth.getValue() + day + hour + min + sec;
+		codeUnique = candidat.getCnprAutoEcole().getCodeUnique() + "-" + year + candidatService.shuffleString(times);
 		candidat.setCodeUnique(codeUnique);
-		
-		
-		//List<Candidat> candidatList = this.candidatService.getAllCandidatByAutoEcoleId(id);
 
-		//CnprAutoEcole autoEcole = this.autoEcoleServiceImpl.getCnprAutoEcoleById(id);
-		//candidat.setCnprAutoEcole(autoEcole);
-		//candidat.setCreatedBy((CnprUser) session.getAttribute("loggedUser"));
+		// List<Candidat> candidatList =
+		// this.candidatService.getAllCandidatByAutoEcoleId(id);
 
-		//session.setAttribute("autoEcole", autoEcole);
-		//session.setAttribute("candidatList", candidatList);
+		// CnprAutoEcole autoEcole = this.autoEcoleServiceImpl.getCnprAutoEcoleById(id);
+		// candidat.setCnprAutoEcole(autoEcole);
+		// candidat.setCreatedBy((CnprUser) session.getAttribute("loggedUser"));
+
+		// session.setAttribute("autoEcole", autoEcole);
+		// session.setAttribute("candidatList", candidatList);
 		candidatService.saveOrUpdateCandidat(candidat);
-		
 
-		return "redirect:/autoEcole/candidat/"+candidat.getCnprAutoEcole().getId();
+		return "redirect:/autoEcole/candidat/" + candidat.getCnprAutoEcole().getId();
 	}
-	
+
 	@GetMapping("/candidat/{id}/view/{candidatId}")
-	public String candidatsView(@PathVariable("id") long id,@PathVariable("candidatId") long candidatId, Model model, HttpServletRequest request) {
+	public String candidatsView(@PathVariable("id") long id, @PathVariable("candidatId") long candidatId, Model model,
+			HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		Candidat candidat = this.candidatService.getCandidatById(candidatId);
 
@@ -488,9 +553,10 @@ public class AutoEcoleController {
 
 		return "/autoEcole/candidat-view";
 	}
-	
+
 	@GetMapping("/candidat/{id}/edit/{candidatId}")
-	public String candidatsEdit(@PathVariable("id") long id,@PathVariable("candidatId") long candidatId, Model model, HttpServletRequest request) {
+	public String candidatsEdit(@PathVariable("id") long id, @PathVariable("candidatId") long candidatId, Model model,
+			HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		Candidat candidat = this.candidatService.getCandidatById(candidatId);
 		model.addAttribute("candidat", candidat);
@@ -511,6 +577,7 @@ public class AutoEcoleController {
 		redirectAttributes.addFlashAttribute("message", "Save failure");
 		return "redirect:/autoEcole/candidat";
 	}
+
 	@PostMapping("/editCandidat")
 	public String editCandidat(Candidat candidat, RedirectAttributes redirectAttributes) {
 
@@ -685,11 +752,11 @@ public class AutoEcoleController {
 
 		if (this.autoEcoleServiceImpl.saveOrUpdateCnprAutoEcole(autoEcole)) {
 			redirectAttributes.addFlashAttribute("message", "Doucment ajouté avec succes");
-			return "redirect:/autoEcole/list";
+			return "redirect:/autoEcole/view/" + autoEcole.getId();
 		}
 		;
 		redirectAttributes.addFlashAttribute("message", "Save failure");
-		return "redirect:/autoEcole/list";
+		return "redirect:/autoEcole/view/" + autoEcole.getId();
 	}
 
 	@PostMapping("/addPhoto")
@@ -753,11 +820,11 @@ public class AutoEcoleController {
 
 		if (this.autoEcoleServiceImpl.saveOrUpdateCnprAutoEcole(autoEcole)) {
 			redirectAttributes.addFlashAttribute("message", "Photo ajouté avec succes");
-			return "redirect:/autoEcole/list";
+			return "redirect:/autoEcole/view/" + autoEcole.getId();
 		}
 		;
 		redirectAttributes.addFlashAttribute("message", "Save failure");
-		return "redirect:/autoEcole/list";
+		return "redirect:/autoEcole/view/" + autoEcole.getId();
 	}
 
 	@RequestMapping(value = "/viewDoc/{id}", method = RequestMethod.GET)

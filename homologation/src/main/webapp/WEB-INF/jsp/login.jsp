@@ -115,11 +115,13 @@
 													class="btn btn-success">
 													<i class="bi bi-arrow-bar-right"></i> Se connecter
 												</button>
+												
 											</div>
 
 
 
 										</form>
+										
 										 <c:if test="${param.error != null}">
 											<p style="color: red;">Identifiant ou mot de passe incorrect. Contactez l'administrateur</p>
 										</c:if>

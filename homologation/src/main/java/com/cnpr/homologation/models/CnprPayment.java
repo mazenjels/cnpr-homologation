@@ -56,6 +56,9 @@ public class CnprPayment {
 	@Column(name="motif")
 	private String motif;	
 	
+	@Column(name="bank_transaction_time")
+	private String bankTransactionTime;
+	
 	@Column(name = "active_status")
 	private boolean activeStatus=false;
 	
@@ -92,6 +95,16 @@ public class CnprPayment {
 
 	public void setCreatedBy(CnprUser createdBy) {
 		this.createdBy = createdBy;
+	}
+
+
+	public String getBankTransactionTime() {
+		return bankTransactionTime;
+	}
+
+
+	public void setBankTransactionTime(String bankTransactionTime) {
+		this.bankTransactionTime = bankTransactionTime;
 	}
 
 

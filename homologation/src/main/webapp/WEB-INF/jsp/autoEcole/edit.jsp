@@ -18,7 +18,7 @@
 
 		<div class="row">
 			<div class="col-md-2">
-				<a href="/cnpr-homologation/autoEcole/list" class="btn btn-primary"><i class="bi bi-arrow-left"></i> Retour</a>
+				<a href="/cnpr-homologation/autoEcole/view/${autoEcole.id }" class="btn btn-primary"><i class="bi bi-arrow-left"></i> Retour</a>
 			</div>
 		</div>
 		<hr />

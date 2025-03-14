@@ -10,7 +10,7 @@ public interface PrixPermisTypeAutoEcoleService {
 
 	public List<PrixTypePermisAutoEcole> getAllActivePrixTypePermisAutoEcole();
 
-	public boolean saveOrUpdatePrixTypePermisAutoEcole(PrixTypePermisAutoEcole pers);
+	public PrixTypePermisAutoEcole saveOrUpdatePrixTypePermisAutoEcole(PrixTypePermisAutoEcole pers);
 
 	public boolean deletePrixTypePermisAutoEcoleById(long id);
 

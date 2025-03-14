@@ -13,95 +13,101 @@
 
 
 		<%-- <c:if test="${authorities.iterator().next().toString().equals('Secrétaire du DRH') || authorities.iterator().next().toString().equals('ADMIN')}"> --%>
-		
-		
+
+
+		<c:if
+			test="${loggedUserPermission['display_menu_administration'] eq true}">
+			<li class="nav-item"><a class="nav-link collapsed"
+				data-bs-target="#components1-nav" data-bs-toggle="collapse" href="#">
+					<i class="bi bi-folder-fill"></i><span> Administration</span><i
+					class="bi bi-chevron-down ms-auto"></i>
+			</a>
+
+				<ul id="components1-nav" class="nav-content collapse "
+					data-bs-parent="#sidebar-nav">
+					<c:if test="${autoEcoleUser eq null}">
+						<c:if
+							test="${loggedUserPermission['display_menu_planification'] eq true}">
+							<li class="nav-item"><a class="nav-link "
+								href="/cnpr-homologation/planification/list"> <i
+									class="bi bi-input-cursor-text"></i> <span>Planification
+										et identification</span>
+							</a></li>
+						</c:if>
+						<c:if
+							test="${loggedUserPermission['display_menu_auto_ecole'] eq true}">
+							<li class="nav-item"><a class="nav-link "
+								href="/cnpr-homologation/autoEcole/list"> <i
+									class="bi bi-input-cursor-text"></i> <span>Auto-écoles</span>
+							</a></li>
+						</c:if>
+					</c:if>
+
+					<c:if test="${autoEcoleUser ne null}">
+						<li class="nav-item"><a class="nav-link "
+							href="/cnpr-homologation/autoEcole/view/${autoEcoleUser.cnprAutoEcole.id}">
+								<i class="bi bi-input-cursor-text"></i> <span>Informations
+									de l'auto écoles</span>
+						</a></li>
+					</c:if>
+
+				</ul></li>
+
+
+
 			<c:if
-				test="${loggedUserPermission['display_menu_administration'] eq true}">
+				test="${loggedUserPermission['display_menu_elearning'] eq true}">
 				<li class="nav-item"><a class="nav-link collapsed"
-					data-bs-target="#components1-nav" data-bs-toggle="collapse"
-					href="#"> <i class="bi bi-folder-fill"></i><span>
-							Administration</span><i class="bi bi-chevron-down ms-auto"></i>
+					data-bs-target="#componentsLearning-nav" data-bs-toggle="collapse"
+					href="#"> <i class="bi bi-folder-fill"></i><span>E-Learning</span><i
+						class="bi bi-chevron-down ms-auto"></i>
 				</a>
 
-					<ul id="components1-nav" class="nav-content collapse "
+					<ul id="componentsLearning-nav" class="nav-content collapse "
 						data-bs-parent="#sidebar-nav">
-						<c:if test="${autoEcoleUser eq null}">
-							<c:if
-								test="${loggedUserPermission['display_menu_planification'] eq true}">
-								<li class="nav-item"><a class="nav-link "
-									href="/cnpr-homologation/planification/list"> <i
-										class="bi bi-input-cursor-text"></i> <span>Planification
-											et identification</span>
-								</a></li>
-							</c:if>
-							<c:if
-								test="${loggedUserPermission['display_menu_auto_ecole'] eq true}">
-								<li class="nav-item"><a class="nav-link "
-									href="/cnpr-homologation/autoEcole/list"> <i
-										class="bi bi-input-cursor-text"></i> <span>Auto-écoles</span>
-								</a></li>
-							</c:if>
-						</c:if>
-
-						<c:if test="${autoEcoleUser ne null}">
+						<c:if test="${loggedUserPermission['display_menu_lecon'] eq true}">
 							<li class="nav-item"><a class="nav-link "
-								href="/cnpr-homologation/autoEcole/view/${autoEcoleUser.cnprAutoEcole.id}">
-									<i class="bi bi-input-cursor-text"></i> <span>Informations
-										de l'auto écoles</span>
+								href="/cnpr-homologation/lesson/list/"> <i
+									class="bi bi-input-cursor-text"></i> <span>Leçons</span>
+							</a></li>
+						</c:if>
+						<c:if test="${loggedUserPermission['display_menu_media'] eq true}">
+							<li class="nav-item"><a class="nav-link "
+								href="/cnpr-homologation/lesson/medias/"> <i
+									class="bi bi-input-cursor-text"></i> <span>Médias</span>
+							</a></li>
+						</c:if>
+						<c:if
+							test="${loggedUserPermission['display_menu_question'] eq true}">
+							<li class="nav-item"><a class="nav-link "
+								href="/cnpr-homologation/question/list"> <i
+									class="bi bi-input-cursor-text"></i> <span>Questions</span>
 							</a></li>
 						</c:if>
 
 					</ul></li>
-			
+			</c:if>
+
+			<c:if test="${loggedUserPermission['display_menu_paiement'] eq true}">
+				<li class="nav-item"><a class="nav-link collapsed"
+					data-bs-target="#componentsPaiement-nav" data-bs-toggle="collapse"
+					href="#"> <i class="bi bi-currency-dollar"></i><span>Paiements</span><i
+						class="bi bi-chevron-down ms-auto"></i>
+				</a>
+
+					<ul id="componentsPaiement-nav" class="nav-content collapse "
+						data-bs-parent="#sidebar-nav">
+						<c:if test="${loggedUserPermission['list_paiement'] eq true}">
+							<li class="nav-item"><a class="nav-link "
+								href="/cnpr-homologation/payment/list"> <i
+									class="bi bi-input-cursor-text"></i> <span>Afficher tout</span>
+							</a></li>
+						</c:if>
 
 
-			<c:if test="${loggedUserPermission['display_menu_elearning'] eq true}"> 
-			<li class="nav-item"><a class="nav-link collapsed"
-				data-bs-target="#componentsLearning-nav" data-bs-toggle="collapse"
-				href="#"> <i class="bi bi-folder-fill"></i><span>E-Learning</span><i
-					class="bi bi-chevron-down ms-auto"></i>
-			</a>
+					</ul></li>
+			</c:if>
 
-				<ul id="componentsLearning-nav" class="nav-content collapse "
-					data-bs-parent="#sidebar-nav">
-					<c:if test="${loggedUserPermission['display_menu_lecon'] eq true}"> 
-					<li class="nav-item"><a class="nav-link "
-						href="/cnpr-homologation/lesson/list/"> <i
-							class="bi bi-input-cursor-text"></i> <span>Leçons</span>
-					</a></li></c:if>
-					<c:if test="${loggedUserPermission['display_menu_media'] eq true}"> 
-					<li class="nav-item"><a class="nav-link "
-						href="/cnpr-homologation/lesson/medias/"> <i
-							class="bi bi-input-cursor-text"></i> <span>Médias</span>
-					</a></li></c:if>
-					<c:if test="${loggedUserPermission['display_menu_question'] eq true}"> 
-					<li class="nav-item"><a class="nav-link "
-						href="/cnpr-homologation/question/list"> <i
-							class="bi bi-input-cursor-text"></i> <span>Questions</span>
-					</a></li></c:if>
-
-				</ul></li>
-				</c:if>
-
-<c:if test="${loggedUserPermission['display_menu_paiement'] eq true}"> 
-			<li class="nav-item"><a class="nav-link collapsed"
-				data-bs-target="#componentsPaiement-nav" data-bs-toggle="collapse"
-				href="#"> <i class="bi bi-currency-dollar"></i><span>Paiements</span><i
-					class="bi bi-chevron-down ms-auto"></i>
-			</a>
-
-				<ul id="componentsPaiement-nav" class="nav-content collapse "
-					data-bs-parent="#sidebar-nav">
-					<c:if test="${loggedUserPermission['list_paiement'] eq true}"> 
-					<li class="nav-item"><a class="nav-link "
-						href="/cnpr-homologation/payment/list"> <i
-							class="bi bi-input-cursor-text"></i> <span>Afficher tout</span>
-					</a></li></c:if>
-					
-
-				</ul></li>
-				</c:if>
-	
 			<li class="nav-heading">Paramétrage</li>
 
 			<c:if
@@ -169,29 +175,29 @@
 			</a></li>
 		</c:if>
 
-		<c:if test="${mapGlobalModule['Utilisateur'] eq true}">
+		<%-- <c:if test="${mapGlobalModule['Utilisateur'] eq true}"> --%>
 			<li class="nav-heading">Gestion des utilisateurs</li>
-			<c:if
-				test="${loggedUserPermission['display_menu_utilisateur'] eq true}">
+			<%-- <c:if
+				test="${loggedUserPermission['display_menu_utilisateur'] eq true}"> --%>
 				<li class="nav-item"><a class="nav-link collapsed"
 					href="/cnpr-homologation/user/list"> <i class="bi bi-octagon"></i>
 						<span>Utilisateurs</span>
 				</a></li>
-			</c:if>
-			<c:if test="${loggedUserPermission['display_menu_profil'] eq true}">
+			<%-- </c:if>
+			<c:if test="${loggedUserPermission['display_menu_profil'] eq true}"> --%>
 				<li class="nav-item"><a class="nav-link collapsed"
 					href="/cnpr-homologation/role/list"> <i class="bi bi-octagon"></i>
 						<span>Profils</span>
 				</a></li>
-			</c:if>
+			<%-- </c:if> --%>
 
-			<c:if test="${loggedUserPermission['display_menu_module'] eq true}">
+			<%-- <c:if test="${loggedUserPermission['display_menu_module'] eq true}"> --%>
 				<li class="nav-item"><a class="nav-link collapsed"
 					href="/cnpr-homologation/module/list"> <i class="bi bi-octagon"></i>
 						<span>Modules</span>
 				</a></li>
-			</c:if>
-		</c:if>
+			<%-- </c:if>
+		</c:if> --%>
 
 	</ul>
 

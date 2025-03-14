@@ -22,18 +22,26 @@
 				<a href="/cnpr-homologation/autoEcole/candidat/${autoEcole.id }" class="btn btn-primary"><i
 					class="bi bi-arrow-left"></i> Retour</a>
 
+				
+			</div>
+			<div class="col-md-4" style="text-align: right">
+
 				<c:choose>
 					<c:when test="${empty autoEcole.codeUnique}">
 						<span class="badge bg-info text-dark"><i
 							class="bi bi-warning-circle me-1"></i> Pas encore homologuée </span>
 					</c:when>
 					<c:otherwise>
-						<span class="badge bg-info text-dark"><i
-							class="bi bi-info-circle me-1"></i> Auto école déjà homologuée </span>
-						<span class="badge bg-success"><i
-							class="bi bi-check-circle me-1"></i> ${autoEcole.codeUnique}</span>
+
+						<h5>
+							<span class="badge bg-success"><i
+								class="bi bi-info-circle me-1"></i> Homologué </span> <span
+								class="badge bg-primary"><i
+								class="bi bi-check-circle me-1"></i> ${autoEcole.codeUnique}</span>
+						</h5>
 					</c:otherwise>
 				</c:choose>
+
 			</div>
 		</div>
 		<hr />
@@ -60,7 +68,7 @@
 						<!-- <h3>Web Designer</h3> -->
 						<div class="social-links mt-2">
 							<a href="#" class="twitter"><i class="bi bi-phone"></i> ${candidat.phone }</a> <br/><a
-								href="#" class="facebook"><i class="bi bi-mailbox"></i>${candidat.email }</a>
+								href="#" class="facebook"><i class="bi bi-mailbox"></i> ${candidat.email }</a>
 						</div>
 					</div>
 				</div>

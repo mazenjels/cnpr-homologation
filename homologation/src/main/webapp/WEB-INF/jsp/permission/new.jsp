@@ -87,9 +87,10 @@
 										<div>
 											<input type="checkbox" id="download_pdf" name="action" value="download_pdf" /> <label for="download_pdf">Telecharger PDF</label>
 										</div>
-										
-										
-										
+										<div>
+											<input type="checkbox" id="prix" name="action" value="prix" /> <label for="prix">Definir le prix</label>
+										</div>
+																	
 									</fieldset>
 
 								</div>

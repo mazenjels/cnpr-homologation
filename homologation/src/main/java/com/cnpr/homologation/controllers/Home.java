@@ -25,25 +25,20 @@ import com.cnpr.homologation.repository.ViewUserRepository;
 import com.cnpr.homologation.service.AutoEcoleUserServiceImpl;
 import com.cnpr.homologation.service.RolePermissionServiceImpl;
 
-
 @Controller
 public class Home {
 
 	HttpSession session;
 
-	
-
-	
-	
 	@Autowired
 	ViewUserRepository userRepo;
-	
+
 	@Autowired
 	RolePermissionServiceImpl rolePermissionService;
-	
+
 	@Autowired
 	AutoEcoleUserServiceImpl autoEcoleUserServiceImpl;
-	
+
 //	@Autowired
 //	GlobalModuleServiceImpl globalModuleServiceImpl;
 
@@ -54,17 +49,22 @@ public class Home {
 		return "login";
 	}
 	
+//	@GetMapping(value = "/site")
+//	public String index(@RequestParam(value = "name", defaultValue = "World", required = true) String name,
+//			Model model) {
+//
+//		return "index";
+//	}
+
 	@GetMapping(value = "/dashboard")
 	public String dashboard(@RequestParam(value = "name", defaultValue = "World", required = true) String name,
-			Model model, Authentication authentication,HttpServletRequest request) {
+			Model model, Authentication authentication, HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		
+
 //		List<GlobalModule> activeGlobalModule = globalModuleServiceImpl.getAllActiveGlobalModule();
-		
-		Map<String,Boolean> mapGlobalModule =  new HashMap<>();
-		
-		
-		
+
+		Map<String, Boolean> mapGlobalModule = new HashMap<>();
+
 //		activeGlobalModule.forEach(e->mapGlobalModule.put(e.getDesignation(), e.isActiveStatus()));
 		session.setAttribute("mapGlobalModule", mapGlobalModule);
 //
@@ -73,41 +73,44 @@ public class Home {
 		ViewUser user = userRepo.findByUsername(userDetails.getUsername());
 		CnprUser cnprUser = new CnprUser();
 		cnprUser.setId(user.getId());
-		BCryptPasswordEncoder passwordEncoder =  new BCryptPasswordEncoder();
-		
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
 		String usernameBcrypted = passwordEncoder.encode(userDetails.getUsername());
 		String passwordBcrypted = userDetails.getPassword();
-		
-		boolean samePwd = BCrypt.checkpw(userDetails.getUsername(),passwordBcrypted);//BCrypt.checkpw(passwordBCrypted,user.getPassword());
-		
-		if(samePwd) {
+
+		boolean samePwd = BCrypt.checkpw(userDetails.getUsername(), passwordBcrypted);// BCrypt.checkpw(passwordBCrypted,user.getPassword());
+
+		if (samePwd) {
 			session.setAttribute("loggedUser", user);
-			session.setAttribute("authenticated",true);
-			return "user/reinitPwd"; 
-		}else {
-			
+			session.setAttribute("authenticated", true);
+			return "user/reinitPwd";
+		} else {
+
 		}
-	   // model.addAttribute("username", userDetails.getUsername());
-	   
-	    List<RolePermission> rolePermissions = this.rolePermissionService.getAllRolePermissionByRoleName(userRole.getRole());
-	    List<AutoEcoleUser> autoEcoleUserList = this.autoEcoleUserServiceImpl.getAutoEcoleUserByLoggedUserId(user.getId());
-	    Map<String,Boolean> mapPermission = new HashMap<>();
-	    System.out.println("autoEcoleUserList : "+autoEcoleUserList.size());
-	    System.out.println("loggedUser : "+user.getId()+", username : "+user.getUsername());
-	    if(autoEcoleUserList.size()>0) {
-	    	AutoEcoleUser autoEcoleUser = autoEcoleUserList.get(0);
-	    	
-	    	session.setAttribute("autoEcoleUser", autoEcoleUser);
-	    }
-		
-		rolePermissions.forEach(rp->mapPermission.put(rp.getPermission().getShortCode(), rp.getPermission().isActiveStatus()));
-	  //  System.out.println("username : "+userDetails.getUsername());
+		// model.addAttribute("username", userDetails.getUsername());
+
+		List<RolePermission> rolePermissions = this.rolePermissionService
+				.getAllRolePermissionByRoleName(userRole.getRole());
+		List<AutoEcoleUser> autoEcoleUserList = this.autoEcoleUserServiceImpl
+				.getAutoEcoleUserByLoggedUserId(user.getId());
+		Map<String, Boolean> mapPermission = new HashMap<>();
+		System.out.println("autoEcoleUserList : " + autoEcoleUserList.size());
+		System.out.println("loggedUser : " + user.getId() + ", username : " + user.getUsername());
+		if (autoEcoleUserList.size() > 0) {
+			AutoEcoleUser autoEcoleUser = autoEcoleUserList.get(0);
+
+			session.setAttribute("autoEcoleUser", autoEcoleUser);
+		}
+
+		rolePermissions.forEach(
+				rp -> mapPermission.put(rp.getPermission().getShortCode(), rp.getPermission().isActiveStatus()));
+		// System.out.println("username : "+userDetails.getUsername());
 		session.setAttribute("loggedUser", cnprUser);
-	    session.setAttribute("username", userDetails.getUsername());
-	    session.setAttribute("loggedUserRole", userRole.getRole());
-	    session.setAttribute("loggedUserPermission", mapPermission);
-	    model.addAttribute("roles", userDetails.getAuthorities());
-	    
+		session.setAttribute("username", userDetails.getUsername());
+		session.setAttribute("loggedUserRole", userRole.getRole());
+		session.setAttribute("loggedUserPermission", mapPermission);
+		model.addAttribute("roles", userDetails.getAuthorities());
+
 //	//	return "login";
 		return "dashboard";
 	}
@@ -132,8 +135,7 @@ public class Home {
 //		session.setAttribute("departementList", departement);
 		return "dashboard";
 	}
-	
-	
+
 	@PostMapping(path = "/login", params = "action=login")
 	public String login(HttpServletRequest request) {
 		HttpSession session = request.getSession();
@@ -151,9 +153,4 @@ public class Home {
 		return "redirect:/";
 	}
 
-	
-	
-	
-	
-	
 }

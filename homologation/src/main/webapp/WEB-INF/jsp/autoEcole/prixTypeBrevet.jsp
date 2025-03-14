@@ -4,12 +4,12 @@
 <main id="main" class="main">
 
 	<div class="pagetitle">
-		<h1>Auto écoles</h1>
+		<h1>Auto école / Prix du type de brevet</h1>
 		<nav>
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item"><a href="#">Tableau de bord</a></li>
-				<li class="breadcrumb-item active">Auto écoles /
-					${autoEcole.designation}</li>
+				<li class="breadcrumb-item active">Auto écoles</li>
+				<li class="breadcrumb-item active">Prix du type de brevet</li>
 			</ol>
 		</nav>
 	</div>
@@ -45,140 +45,52 @@
 			</div>
 		</div>
 		<hr />
-		<c:if test="${not empty message}">
-			<div class="alert alert-success alert-dismissible fade show"
-				role="alert">
-				<i class="bi bi-check-circle me-1"></i> ${message}
-				<button type="button" class="btn-close" data-bs-dismiss="alert"
-					aria-label="Close"></button>
-			</div>
-		</c:if>
-		<div class=row>
 
-			<div class="col-xl-6">
-
+		<div class="row">
+			<div class="col-lg-6">
 				<div class="card">
-					<div class="card-header">Ajouter un candidat</div>
 					<div class="card-body">
-						<form:form modelAttribute="candidat" method="post"
-							action="/cnpr-homologation/autoEcole/addCandidat">
+						<h5 class="card-title">Prix du type de brevet</h5>
+						<form:form modelAttribute="prixTypePermis" method="post"
+							action="/cnpr-homologation/autoEcole/prixTypePermis/save">
 							<div class="row">
-								<div class="col-md-4">
+								<div class="col-md-6">
 									<div class="form-floating mb-3">
-										<form:input type="text" class="form-control"
-											required="required" id="nom" path="nom"
-											placeholder="Nom du candidat" />
-
-										<label for="nom">Noms du candidat</label>
-
-										<form:input type="hidden" class="form-control"
-											id="cnprAutoEcole" path="cnprAutoEcole" />
-
-										<form:input type="hidden" class="form-control"
-											path="createdBy" />
-
+										<form:select class="form-select" path="typePermis"
+											aria-label="State">
+											<option value="-1">Selectionner</option>
+											<c:forEach var="typePermis" items="${typePermisList }">
+												<option value="${typePermis.id}">${typePermis.designation}
+													- ${typePermis.categorie}</option>
+											</c:forEach>
+										</form:select>
+										<label for="typePermis">Type de brevet</label>
 									</div>
+									<form:input type="hidden" class="form-control" path="autoEcole" />
+									<form:input type="hidden" class="form-control" path="createdBy" />
 								</div>
-								<div class="col-md-4">
-									<div class="form-floating mb-3">
-										<form:input type="text" class="form-control"
-											required="required" id="postnom" path="postnom"
-											placeholder="Postnom du candidat" />
-
-										<label for="postnom">Postnom du candidat</label>
-
-									</div>
-								</div>
-
-								<div class="col-md-4">
-									<div class="form-floating mb-3">
-										<form:input type="text" class="form-control"
-											required="required" id="prenom" path="prenom"
-											placeholder="Prenom du candidat" />
-
-										<label for="prenom">Prenom du candidat</label>
-
-									</div>
-								</div>
-
-
 							</div>
-
 							<div class="row">
-								<div class="col-md-4">
-									<div class="form-floating mb-3">
-										<form:input type="text" class="form-control"
-											required="required" id="lieuNaissance" path="lieuNaissance"
-											placeholder="Lieu de naissance" />
-
-										<label for="lieuNaissance">Lieu de naissance</label>
-
-									</div>
-								</div>
 								<div class="col-md-4">
 									<div class="form-floating  mb-3">
-										<form:input type="text" onfocus="(this.type='date')"
-											min="1970-01-01" class="form-control input-sm"
-											required="required" id="dateNaissance" path="dateNaissance"
-											placeholder="dd-mm-yyyy" />
-										<label for="dateNaissance">Date de naissance</label>
+										<form:input type="number" min="1" class="form-control"
+											required="required" id="prix" path="prix" placeholder="Prix" />
+										<label for="prix">Prix</label>
+
+									</div>
+									<div class="form-floating mb-3">
+										<form:select class="form-select" path="devise"
+											aria-label="State">
+											<option value="-1">Selectionner</option>
+
+											<option value="CDF">CDF</option>
+											<option value="USD">USD</option>
+										</form:select>
+										<label for="devise">Devise</label>
 									</div>
 								</div>
 
 							</div>
-
-							<fieldset>
-								<legend class="card-title">Contacts</legend>
-								<div class="row">
-									<div class="col-md-6">
-										<div class="form-floating  mb-3">
-											<form:input type="phone" class="form-control"
-												required="required" path="phone" id="phone" maxlength="15"
-												placeholder="+243" />
-											<label for="phone">Numero de telephone (+243)</label>
-
-										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="form-floating  mb-3">
-											<form:input type="text" class="form-control" path="email"
-												id="email" placeholder="Adresse email" />
-											<label for="email">Adresse email</label>
-
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-6">
-										<div class="form-floating  mb-3">
-											<form:select class="form-select" id="typePieceIdentite"
-												path="typePieceIdentite" aria-label="State">
-												<option value="-1">Selectionner la piece d'identite</option>
-												<option value="CARTE D'ELECTEUR">CARTE D'ELECTEUR</option>
-												<option value="PASSEPORT">PASSEPORT</option>
-												<option value="CARTE D'IDENTITE NATIONALE">CARTE
-													D'IDENTITE NATIONALE</option>
-												<option value="PERMIS DE CONDUIRE">PERMIS DE
-													CONDUIRE</option>
-											</form:select>
-										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="form-floating  mb-3">
-											<form:input type="text" class="form-control"
-												path="numeroPieceIdentite" id="numeroPieceIdentite"
-												placeholder="Numero de la pièce d'identité" />
-											<label for="numeroPieceIdentite">Numero de la pièce
-												d'identité</label>
-
-										</div>
-									</div>
-
-
-								</div>
-
-							</fieldset>
-
 							<div class="row p-2">
 								<div class="col-md-2">
 									<button type="submit" value="Register" class="btn btn-success">Enregistrer</button>
@@ -187,61 +99,49 @@
 						</form:form>
 					</div>
 				</div>
-
 			</div>
-
-			<div class="col-xl-6">
+			<div class="col-lg-6">
 				<div class="card">
-					<div class="card-header">
-						<c:choose>
-							<c:when test="${formateurList.size() eq 0}"> Nombre de candidats enregistré(s) : 0</c:when>
-							<c:otherwise>
-						Nombre de candidat(s) enregistré(s) : ${candidatList.size()}
-						</c:otherwise>
-						</c:choose>
-					</div>
+					<div class="card-header"></div>
+
 					<div class="card-body">
-						<table
-							class="table table-bordered table-striped table-hover datatable">
-							<tr>
-								<th>#</th>
-								<th>Noms complet du candidat</th>
-								<th>Telephone</th>
-								<!-- <th>Adresse email</th> -->
-								<th>Code unique</th>
-								<th>Etat du recyclage</th>
-
-								<th></th>
-							</tr>
-							<c:forEach var="candidat" items="${candidatList}"
-								varStatus="counter">
+						<form:form>
+							<table
+								class="table table-bordered table-striped table-hover datatable">
 								<tr>
-									<td>${counter.count}</td>
-									<td>${candidat.nom} ${candidat.postnom} ${candidat.prenom}</td>
-									<td>${candidat.phone}</td>
-									<%-- <td>${candidat.email}</td> --%>
-									<td>${candidat.codeUnique}</td>
-									<td><c:choose>
-											<c:when test="${candidat.recyclageValide eq true}">
-												Validé
-											</c:when>
-											<c:otherwise>
-												En attente de validation
-											</c:otherwise>
-										</c:choose></td>
-									<td><c:if test="${candidat.recyclageValide eq false}">
-											<a title="Mettre a jour"
-												href="/cnpr-homologation/autoEcole/candidat/${autoEcole.id}/edit/${candidat.id}"><i
-												class="bi bi-pencil"></i></a>
-											<a title="Voir"
-												href="/cnpr-homologation/autoEcole/candidat/${autoEcole.id}/view/${candidat.id}"><i
-												class="bi bi-eye"></i></a>
-										</c:if></td>
+									<th>#</th>
+									<th>Type de brevet</th>
+									<th>Prix</th>
+									<th>Devise</th>
+									<th>Statut</th>
+									 <th>Actions</th> 
 								</tr>
-							</c:forEach>
-						</table>
+								<c:forEach var="prixTypePermis" items="${prixTypePermisAutoEcoleList}"
+									varStatus="counter">
+									<tr>
+										<td>${counter.count}</td>
+										<td>CATEGORIE ${prixTypePermis.typePermis.designation} - ${prixTypePermis.typePermis.categorie}</td>
+										<td>${prixTypePermis.prix}</td>
+										<td>${prixTypePermis.devise}</td>
+										<td><c:choose>
+												<c:when test="${prixTypePermis.activeStatus eq false}">Inactif</c:when>
+												<c:otherwise>
+								Actif
+								</c:otherwise>
+											</c:choose></td>
+										<td>
+										<%-- <a title="Modifier"
+										href="/cnpr-homologation/commune/edit/${commune.id}"><i
+											class="bi bi-pencil"></i></a>  --%>
+										<a href="/cnpr-homologation/autoEcole/prixTypePermis/${prixTypePermis.id}/changeStatus"
+										title="Changer de statut" class="btn btn-outline-primary btn-sm"><i
+											class="bi bi-arrow-left-right text-success"></i></a>									
+											</td> 
+									</tr>
+								</c:forEach>
+							</table>
+						</form:form>
 					</div>
-
 				</div>
 			</div>
 		</div>

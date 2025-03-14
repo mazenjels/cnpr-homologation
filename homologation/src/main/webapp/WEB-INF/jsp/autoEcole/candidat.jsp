@@ -19,8 +19,12 @@
 
 		<div class="row">
 			<div class="col-md-4">
-				<a href="/cnpr-homologation/autoEcole/list" class="btn btn-primary"><i
-					class="bi bi-arrow-left"></i> Retour</a>
+				<a href="/cnpr-homologation/autoEcole/view/${autoEcole.id }"
+					class="btn btn-primary"><i class="bi bi-arrow-left"></i> Retour</a>
+
+
+			</div>
+			<div class="col-md-4" style="text-align: right">
 
 				<c:choose>
 					<c:when test="${empty autoEcole.codeUnique}">
@@ -28,12 +32,16 @@
 							class="bi bi-warning-circle me-1"></i> Pas encore homologuée </span>
 					</c:when>
 					<c:otherwise>
-						<span class="badge bg-info text-dark"><i
-							class="bi bi-info-circle me-1"></i> Auto école déjà homologuée </span>
-						<span class="badge bg-success"><i
-							class="bi bi-check-circle me-1"></i> ${autoEcole.codeUnique}</span>
+
+						<h5>
+							<span class="badge bg-success"><i
+								class="bi bi-info-circle me-1"></i> Homologué </span> <span
+								class="badge bg-primary"><i
+								class="bi bi-check-circle me-1"></i> ${autoEcole.codeUnique}</span>
+						</h5>
 					</c:otherwise>
 				</c:choose>
+
 			</div>
 		</div>
 		<hr />
@@ -202,14 +210,14 @@
 								<!-- <th>Adresse email</th> -->
 								<th>Code unique</th>
 								<th>Etat du recyclage</th>
-								
+
 								<th></th>
 							</tr>
 							<c:forEach var="candidat" items="${candidatList}"
 								varStatus="counter">
 								<tr>
 									<td>${counter.count}</td>
-									<td>${candidat.nom}${candidat.postnom}${candidat.prenom}</td>
+									<td>${candidat.nom} ${candidat.postnom} ${candidat.prenom}</td>
 									<td>${candidat.phone}</td>
 									<%-- <td>${candidat.email}</td> --%>
 									<td>${candidat.codeUnique}</td>

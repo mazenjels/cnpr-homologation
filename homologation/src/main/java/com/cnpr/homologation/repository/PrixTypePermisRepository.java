@@ -21,4 +21,7 @@ public interface PrixTypePermisRepository extends JpaRepository<PrixTypePermisAu
 	
 	@Query("SELECT t FROM PrixTypePermisAutoEcole t where t.activeStatus=true")
 	List<PrixTypePermisAutoEcole> getAllActivePrixTypePermisAutoEcole();
+
+	@Query("SELECT t FROM PrixTypePermisAutoEcole t where  t.autoEcole.id=?1")
+	List<PrixTypePermisAutoEcole> getAllPrixTypePermisAutoEcoleById(long id);
 }
